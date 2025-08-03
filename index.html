@@ -273,83 +273,129 @@
 
             @page {
                 size: A4 portrait;
-                margin: 5mm;
+                margin: 10mm;
             }
 
             body {
-                background: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                font-size: 14px !important;
-            }
-
-            .container {
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                box-shadow: none !important;
-                background: none !important;
+                background: white;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
             }
 
             .controls, .header, .status {
                 display: none !important;
             }
 
+            .container {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+
             .receipt-grid {
                 display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
                 grid-template-rows: repeat(2, 1fr) !important;
-                gap: 10mm !important;
-                width: 190mm !important;
-                height: 277mm !important;
-                page-break-after: always !important;
-                margin: 0 !important;
-                padding: 0 !important;
+                gap: 8mm !important;
+                page-break-after: always;
+                width: 190mm;
+                height: 267mm;
+                max-height: 267mm;
+                overflow: hidden;
             }
 
             .receipt-grid:last-child {
-                page-break-after: auto !important;
+                page-break-after: auto;
             }
 
             .receipt {
-                width: 90mm !important;
-                height: 130mm !important;
-                margin: 0 !important;
-                padding: 5mm !important;
-                border: 2px solid #000 !important;
                 break-inside: avoid !important;
-                page-break-inside: avoid !important;
+                border: 3px solid #000 !important;
+                padding: 5mm !important;
+                box-shadow: none !important;
+                background: white !important;
+                border-radius: 4mm;
+                margin: 0 !important;
+                width: 91mm !important;
+                height: 140mm !important;
+                max-height: 140mm !important;
+                overflow: hidden;
                 font-size: 14px !important;
+                display: flex !important;
+                flex-direction: column !important;
             }
 
             .receipt-header {
-                padding: 3mm !important;
-                margin: -5mm -5mm 5mm -5mm !important;
+                margin: -5mm -5mm 3mm -5mm !important;
+                padding: 4mm !important;
+                background: #f8f8f8 !important;
+                border-bottom: 2px solid #2c5aa0 !important;
+                border-radius: 3mm 3mm 0 0 !important;
+                flex-shrink: 0 !important;
             }
 
             .receipt-title {
-                font-size: 18px !important;
+                font-size: 16px !important;
+                margin: 0 0 3mm 0 !important;
+                line-height: 1.4 !important;
+                font-weight: bold !important;
             }
 
             .receipt-number {
-                font-size: 16px !important;
+                font-size: 14px !important;
+                padding: 2.5mm 4mm !important;
+                border-radius: 10px !important;
+                border: 2px solid #e9ecef !important;
+                font-weight: bold !important;
+            }
+
+            .receipt-body {
+                flex: 1 !important;
+                font-size: 14px !important;
+                line-height: 1.4 !important;
+                margin: 3mm 0 !important;
             }
 
             .field {
-                padding: 3mm !important;
+                padding: 3mm 4mm !important;
                 margin: 2mm 0 !important;
+                font-size: 14px !important;
+                border-radius: 2.5mm !important;
+                border-right: 3mm solid #2c5aa0 !important;
+            }
+
+            .field-label,
+            .field-value {
                 font-size: 14px !important;
             }
 
             .amount-field {
+                background: #28a745 !important;
+                color: white !important;
                 padding: 4mm !important;
-                font-size: 16px !important;
+                margin: 3mm 0 !important;
+                border: none !important;
+                border-radius: 3mm !important;
+            }
+
+            .amount-field .field-label,
+            .amount-field .field-value {
+                color: white !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
             }
 
             .receipt-footer {
-                padding: 3mm !important;
-                margin: 5mm -5mm -5mm -5mm !important;
-                font-size: 12px !important;
+                margin: 3mm -4mm -4mm -4mm !important;
+                padding: 3mm 4mm !important;
+                font-size: 11px !important;
+                border-radius: 0 0 3mm 3mm !important;
+                line-height: 1.3 !important;
+                flex-shrink: 0 !important;
+                background: #f8f8f8 !important;
+                border-top: 2px solid #e9ecef !important;
             }
         }
 
@@ -514,7 +560,7 @@
         container.innerHTML = '';
 
         try {
-            // تجميع الإيصالات في مجموعات من 4 إيصالات (2x2)
+            // تجميع الإيصالات في مجموعات من 4 إيصالات (2x2) بدلاً من 6
             for (let i = 0; i < receiptsData.length; i += 4) {
                 const pageDiv = document.createElement('div');
                 pageDiv.className = 'receipt-grid';
@@ -576,31 +622,209 @@
         showStatus('جاري إنشاء ملف PDF... 📄', 'info');
 
         try {
+            // التحقق من توفر المكتبات
+            if (typeof window.jspdf === 'undefined' || typeof html2canvas === 'undefined') {
+                throw new Error('مكتبات PDF غير متاحة');
+            }
+
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
-            const pages = container.querySelectorAll('.receipt-grid');
+
+            const pages = Array.from(container.children);
 
             for (let i = 0; i < pages.length; i++) {
                 if (i > 0) {
                     pdf.addPage();
                 }
 
-                const canvas = await html2canvas(pages[i], {
-                    scale: 2,
-                    logging: false,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    width: 210,
-                    height: 297
+                const page = pages[i];
+
+                // إنشاء نسخة للطباعة من الصفحة
+                const printVersion = page.cloneNode(true);
+
+                // تطبيق أنماط الطباعة على النسخة
+                printVersion.style.cssText = `
+                    display: grid !important;
+                    grid-template-columns: repeat(2, 1fr) !important;
+                    grid-template-rows: repeat(2, 1fr) !important;
+                    gap: 8mm !important;
+                    width: 190mm !important;
+                    height: 267mm !important;
+                    max-height: 267mm !important;
+                    overflow: hidden !important;
+                    background: white !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    box-sizing: border-box !important;
+                `;
+
+                // تطبيق أنماط الطباعة على الإيصالات
+                const receipts = printVersion.querySelectorAll('.receipt');
+                receipts.forEach(receipt => {
+                    receipt.style.cssText = `
+                        break-inside: avoid !important;
+                        border: 3px solid #000 !important;
+                        padding: 5mm !important;
+                        box-shadow: none !important;
+                        background: white !important;
+                        border-radius: 4mm !important;
+                        margin: 0 !important;
+                        width: 91mm !important;
+                        height: 140mm !important;
+                        max-height: 140mm !important;
+                        overflow: hidden !important;
+                        font-size: 14px !important;
+                        font-family: Arial, sans-serif !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        box-sizing: border-box !important;
+                    `;
+
+                    // تحسين العناصر الداخلية
+                    const header = receipt.querySelector('.receipt-header');
+                    if (header) {
+                        header.style.cssText = `
+                            margin: -5mm -5mm 3mm -5mm !important;
+                            padding: 4mm !important;
+                            background: #f8f8f8 !important;
+                            border-bottom: 2px solid #2c5aa0 !important;
+                            border-radius: 3mm 3mm 0 0 !important;
+                            flex-shrink: 0 !important;
+                            text-align: center !important;
+                        `;
+                    }
+
+                    const title = receipt.querySelector('.receipt-title');
+                    if (title) {
+                        title.style.cssText = `
+                            font-size: 16px !important;
+                            margin: 0 0 3mm 0 !important;
+                            line-height: 1.4 !important;
+                            font-weight: bold !important;
+                            color: #2c5aa0 !important;
+                        `;
+                    }
+
+                    const receiptNumber = receipt.querySelector('.receipt-number');
+                    if (receiptNumber) {
+                        receiptNumber.style.cssText = `
+                            font-size: 14px !important;
+                            padding: 2.5mm 4mm !important;
+                            border-radius: 10px !important;
+                            background: white !important;
+                            color: #6c757d !important;
+                            display: inline-block !important;
+                            border: 2px solid #e9ecef !important;
+                            font-weight: bold !important;
+                        `;
+                    }
+
+                    const body = receipt.querySelector('.receipt-body');
+                    if (body) {
+                        body.style.cssText = `
+                            flex: 1 !important;
+                            font-size: 14px !important;
+                            line-height: 1.4 !important;
+                            margin: 3mm 0 !important;
+                        `;
+                    }
+
+                    const fields = receipt.querySelectorAll('.field');
+                    fields.forEach(field => {
+                        if (field.classList.contains('amount-field')) {
+                            field.style.cssText = `
+                                background: #28a745 !important;
+                                color: white !important;
+                                padding: 4mm !important;
+                                margin: 3mm 0 !important;
+                                border: none !important;
+                                border-radius: 3mm !important;
+                                display: flex !important;
+                                justify-content: space-between !important;
+                                align-items: center !important;
+                                font-size: 14px !important;
+                                font-weight: bold !important;
+                            `;
+                        } else {
+                            field.style.cssText = `
+                                padding: 3mm 4mm !important;
+                                margin: 2mm 0 !important;
+                                font-size: 14px !important;
+                                border-radius: 2.5mm !important;
+                                border-right: 3mm solid #2c5aa0 !important;
+                                background: rgba(44, 90, 160, 0.15) !important;
+                                display: flex !important;
+                                justify-content: space-between !important;
+                                align-items: center !important;
+                            `;
+                        }
+                    });
+
+                    const fieldLabels = receipt.querySelectorAll('.field-label');
+                    fieldLabels.forEach(label => {
+                        label.style.cssText = `
+                            font-size: 14px !important;
+                            font-weight: bold !important;
+                            color: ${label.closest('.amount-field') ? 'white' : '#495057'} !important;
+                        `;
+                    });
+
+                    const fieldValues = receipt.querySelectorAll('.field-value');
+                    fieldValues.forEach(value => {
+                        value.style.cssText = `
+                            font-size: 14px !important;
+                            font-weight: bold !important;
+                            color: ${value.closest('.amount-field') ? 'white' : '#2c5aa0'} !important;
+                        `;
+                    });
+
+                    const footer = receipt.querySelector('.receipt-footer');
+                    if (footer) {
+                        footer.style.cssText = `
+                            margin: 3mm -5mm -5mm -5mm !important;
+                            padding: 3mm 4mm !important;
+                            font-size: 11px !important;
+                            border-radius: 0 0 3mm 3mm !important;
+                            line-height: 1.3 !important;
+                            flex-shrink: 0 !important;
+                            background: #f8f8f8 !important;
+                            text-align: center !important;
+                            color: #6c757d !important;
+                            border-top: 2px solid #e9ecef !important;
+                        `;
+                    }
                 });
 
-                const imgData = canvas.toDataURL('image/jpeg', 1.0);
-                pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+                // إضافة النسخة إلى الصفحة مؤقتاً
+                document.body.appendChild(printVersion);
+
+                // إنشاء canvas من النسخة المحسنة
+                const canvas = await html2canvas(printVersion, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    allowTaint: true,
+                    logging: false,
+                    width: 794, // A4 width at 96 DPI (210mm)
+                    height: 1123, // A4 height at 96 DPI (297mm)
+                    windowWidth: 794,
+                    windowHeight: 1123
+                });
+
+                // إزالة النسخة المؤقتة
+                document.body.removeChild(printVersion);
+
+                const imgData = canvas.toDataURL('image/png', 1.0);
+
+                // إضافة الصورة للـ PDF بأبعاد A4 الصحيحة
+                pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
             }
 
-            const fileName = `إيصالات_اتحاد_الملاك_${document.getElementById('monthInput').value}_${document.getElementById('yearInput').value}.pdf`;
+            const fileName = `ايصالات_اتحاد_الملاك_${document.getElementById('monthInput').value}_${document.getElementById('yearInput').value}.pdf`;
             pdf.save(fileName);
+
             showStatus('تم تحميل ملف PDF بنجاح! 📥', 'success');
+
         } catch (error) {
             console.error('خطأ في إنشاء PDF:', error);
             showStatus(`حدث خطأ في إنشاء ملف PDF: ${error.message}`, 'error');
