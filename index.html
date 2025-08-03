@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد إيصالات اتحاد الملاك</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2c5aa0;
+            font-size: 28px;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #2c5aa0, #1e3f73);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(44, 90, 160, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+        
+        .receipt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .receipt {
+            border: 2px solid #2c5aa0;
+            border-radius: 12px;
+            padding: 25px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            page-break-inside: avoid;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .receipt::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #2c5aa0, #1e3f73);
+        }
+        
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .receipt-title {
+            color: #2c5aa0;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .receipt-number {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 5px 0 0 0;
+        }
+        
+        .receipt-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 14px;
+        }
+        
+        .field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .field:last-child {
+            border-bottom: none;
+        }
+        
+        .field-label {
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .field-value {
+            color: #2c5aa0;
+            font-weight: 600;
+        }
+        
+        .amount-field {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .amount-field .field-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .receipt-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #e9ecef;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media print {
+            body {
+                background: white;
+                font-size: 10px;
+                margin: 0;
+                padding: 10px;
+            }
+            .controls, .header, .status {
+                display: none !important;
+            }
+            .container {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            .receipt-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+                page-break-inside: avoid;
+            }
+            .receipt {
+                break-inside: avoid;
+                margin-bottom: 0;
+                border: 2px solid #000;
+                padding: 15px;
+                box-shadow: none;
+                height: auto;
+                min-height: 340px;
+                max-height: 340px;
+                overflow: hidden;
+                font-size: 11px;
+            }
+            .receipt-header {
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+            }
+            .receipt-title {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            .receipt-number {
+                font-size: 11px;
+            }
+            .receipt-body {
+                gap: 6px;
+                font-size: 11px;
+            }
+            .field {
+                padding: 4px 0;
+            }
+            .field-label, .field-value {
+                font-size: 11px;
+            }
+            .amount-field .field-value {
+                font-size: 13px;
+            }
+            .receipt-footer {
+                margin-top: 12px;
+                padding-top: 8px;
+                font-size: 9px;
+            }
+            
+            /* فاصل كل 4 إيصالات */
+            .receipt:nth-child(4n) {
+                page-break-after: always;
+            }
+            
+            /* التأكد من أن آخر مجموعة لا تحتوي على فاصل صفحة */
+            .receipt:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .controls > div {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px !important;
+            }
+            .controls label {
+                text-align: center;
+            }
+            .receipt-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 مولد إيصالات اتحاد الملاك</h1>
+            <p>نظام إنشاء وطباعة إيصالات الاشتراكات الشهرية</p>
+        </div>
+        
+        <div class="controls">
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                <label for="monthInput" style="font-weight: bold; color: #2c5aa0;">الشهر:</label>
+                <select id="monthInput" style="padding: 8px 12px; border: 2px solid #2c5aa0; border-radius: 6px; font-size: 16px; background: white;">
+                    <option value="يناير">يناير</option>
+                    <option value="فبراير">فبراير</option>
+                    <option value="مارس">مارس</option>
+                    <option value="أبريل">أبريل</option>
+                    <option value="مايو">مايو</option>
+                    <option value="يونيو">يونيو</option>
+                    <option value="يوليو" selected>يوليو</option>
+                    <option value="أغسطس">أغسطس</option>
+                    <option value="سبتمبر">سبتمبر</option>
+                    <option value="أكتوبر">أكتوبر</option>
+                    <option value="نوفمبر">نوفمبر</option>
+                    <option value="ديسمبر">ديسمبر</option>
+                </select>
+                <label for="yearInput" style="font-weight: bold; color: #2c5aa0;">السنة:</label>
+                <input type="number" id="yearInput" value="2025" min="2020" max="2030" style="padding: 8px 12px; border: 2px solid #2c5aa0; border-radius: 6px; font-size: 16px; width: 80px;">
+            </div>
+            <button class="btn" onclick="generateAllReceipts()">📄 إنشاء جميع الإيصالات</button>
+            <button class="btn btn-success" onclick="downloadPDF()">📥 تحميل PDF</button>
+            <button class="btn btn-danger" onclick="clearReceipts()">🗑️ مسح الإيصالات</button>
+            <button class="btn" onclick="printReceipts()">🖨️ طباعة</button>
+        </div>
+        
+        <div id="status"></div>
+        <div id="receiptsContainer" class="receipt-grid"></div>
+    </div>
+
+    <script>
+        const receiptsData = [
+            { receiptNo: 61, floor: 1, apartment: 4, name: "عبير", title: "الأستاذة", amount: "مائة جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 62, floor: 1, apartment: 2, name: "عمرو", title: "الأستاذ", amount: "مائة جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 63, floor: 2, apartment: 3, name: "محمود", title: "الأستاذ", amount: "مائة جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 64, floor: 2, apartment: 4, name: "حسام", title: "الأستاذ", amount: "مائة و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 65, floor: 3, apartment: 5, name: "أحمد السيد", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 66, floor: 3, apartment: 6, name: "ماهر", title: "الحاج", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 67, floor: 4, apartment: 7, name: "محمد خيراللة", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 68, floor: 4, apartment: 8, name: "أحمد محمد", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 69, floor: 5, apartment: 9, name: "عبداللة", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 70, floor: 5, apartment: 10, name: "إيمن حسين", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 71, floor: 6, apartment: null, name: "بلال", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 72, floor: 7, apartment: 14, name: "فياض", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 73, floor: 8, apartment: 15, name: "أحمد عبدالحليم", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 74, floor: 8, apartment: 16, name: "أمجد", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 75, floor: 9, apartment: 17, name: "محمد ياسر", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 76, floor: 9, apartment: 18, name: "هشام", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 77, floor: 10, apartment: 20, name: "شادية", title: "الحاجة", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 78, floor: 11, apartment: 21, name: "رائد", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 79, floor: 11, apartment: 22, name: "مروان", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 80, floor: 12, apartment: 23, name: "عوض", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 81, floor: 12, apartment: 24, name: "مينا", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 82, floor: 13, apartment: 25, name: "أحمد", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 83, floor: 13, apartment: 26, name: "عبداللة على", title: "الأستاذ", amount: "مائتان جنيها", month: "يوليو", year: "2025" },
+            { receiptNo: 84, floor: "السطح", apartment: null, name: "أحمد النقاش", title: "الأستاذ", amount: "مائتان و خمسون جنيها", month: "يوليو", year: "2025" }
+        ];
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        function createReceiptHTML(data) {
+            const apartmentText = data.apartment ? `شقة ${data.apartment}` : '';
+            const floorText = data.floor === "السطح" ? data.floor : `الدور ${data.floor}`;
+            
+            return `
+                <div class="receipt" id="receipt-${data.receiptNo}">
+                    <div class="receipt-header">
+                        <h3 class="receipt-title">إيصال سداد اشتراك شهري لاتحاد الملاك</h3>
+                        <p class="receipt-number">إيصال رقم: ${data.receiptNo}</p>
+                    </div>
+                    
+                    <div class="receipt-body">
+                        <div class="field">
+                            <span class="field-label">المكان:</span>
+                            <span class="field-value">${floorText}</span>
+                        </div>
+                        
+                        ${apartmentText ? `
+                        <div class="field">
+                            <span class="field-label">الشقة:</span>
+                            <span class="field-value">${apartmentText}</span>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="field">
+                            <span class="field-label">الاسم:</span>
+                            <span class="field-value">${data.title} ${data.name}</span>
+                        </div>
+                        
+                        <div class="field">
+                            <span class="field-label">الشهر:</span>
+                            <span class="field-value">${data.month}</span>
+                        </div>
+                        
+                        <div class="field">
+                            <span class="field-label">السنة:</span>
+                            <span class="field-value">${data.year}</span>
+                        </div>
+                        
+                        <div class="field amount-field">
+                            <span class="field-label">قيمة الاشتراك:</span>
+                            <span class="field-value">${data.amount}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-footer">
+                        <p>شكراً لكم على التزامكم بسداد الاشتراك الشهري</p>
+                        <p>تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateAllReceipts() {
+            const container = document.getElementById('receiptsContainer');
+            const selectedMonth = document.getElementById('monthInput').value;
+            const selectedYear = document.getElementById('yearInput').value;
+            
+            container.innerHTML = '';
+            
+            receiptsData.forEach(receipt => {
+                // تحديث الشهر والسنة حسب الاختيار
+                const updatedReceipt = {
+                    ...receipt,
+                    month: selectedMonth,
+                    year: selectedYear
+                };
+                container.innerHTML += createReceiptHTML(updatedReceipt);
+            });
+            
+            showStatus(`تم إنشاء ${receiptsData.length} إيصال لشهر ${selectedMonth} ${selectedYear} بنجاح! 🎉`, 'success');
+        }
+
+        function clearReceipts() {
+            document.getElementById('receiptsContainer').innerHTML = '';
+            showStatus('تم مسح جميع الإيصالات', 'info');
+        }
+
+        function printReceipts() {
+            window.print();
+        }
+
+        async function downloadPDF() {
+            const container = document.getElementById('receiptsContainer');
+            
+            if (!container.children.length) {
+                showStatus('يرجى إنشاء الإيصالات أولاً!', 'info');
+                return;
+            }
+
+            showStatus('جاري إنشاء ملف PDF... 📄', 'info');
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const receipts = Array.from(container.children);
+                const receiptsPerPage = 4;
+                
+                for (let i = 0; i < receipts.length; i += receiptsPerPage) {
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    // إنشاء container مؤقت لـ 4 إيصالات
+                    const tempContainer = document.createElement('div');
+                    tempContainer.style.cssText = `
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 15px;
+                        padding: 10px;
+                        background: white;
+                        width: 800px;
+                        font-size: 11px;
+                    `;
+                    
+                    // إضافة 4 إيصالات (أو أقل في الصفحة الأخيرة)
+                    for (let j = 0; j < receiptsPerPage && i + j < receipts.length; j++) {
+                        const receiptClone = receipts[i + j].cloneNode(true);
+                        receiptClone.style.cssText = `
+                            border: 2px solid #000;
+                            padding: 15px;
+                            background: white;
+                            height: 340px;
+                            overflow: hidden;
+                            font-size: 11px;
+                            box-sizing: border-box;
+                        `;
+                        tempContainer.appendChild(receiptClone);
+                    }
+                    
+                    document.body.appendChild(tempContainer);
+                    
+                    const canvas = await html2canvas(tempContainer, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#ffffff',
+                        width: 800,
+                        height: 600
+                    });
+                    
+                    document.body.removeChild(tempContainer);
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = 190;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, Math.min(imgHeight, 270));
+                }
+                
+                pdf.save(`ايصالات_اتحاد_الملاك_${document.getElementById('monthInput').value}_${document.getElementById('yearInput').value}.pdf`);
+                showStatus('تم تحميل ملف PDF بنجاح! 📥', 'success');
+                
+            } catch (error) {
+                console.error('خطأ في إنشاء PDF:', error);
+                showStatus('حدث خطأ في إنشاء ملف PDF', 'info');
+            }
+        }
+
+        // إنشاء الإيصالات تلقائياً عند تحميل الصفحة
+        window.onload = function() {
+            generateAllReceipts();
+        };
+    </script>
+</body>
+</html>
