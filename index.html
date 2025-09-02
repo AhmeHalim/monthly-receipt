@@ -647,19 +647,34 @@
                 const page = pages[i];
                 const printVersion = page.cloneNode(true);
 
+                // إنشاء حاوي خارجي لضمان المحاذاة الصحيحة
+                const wrapper = document.createElement('div');
+                wrapper.style.cssText = `
+                    direction: rtl !important;
+                    text-align: right !important;
+                    width: 210mm !important;
+                    height: 297mm !important;
+                    background: white !important;
+                    margin: 0 !important;
+                    padding: 8mm !important;
+                    box-sizing: border-box !important;
+                    position: relative !important;
+                `;
+
                 printVersion.style.cssText = `
                     display: grid !important;
                     grid-template-columns: repeat(2, 1fr) !important;
                     grid-template-rows: repeat(2, 1fr) !important;
-                    gap: 6mm !important;
+                    gap: 8mm !important;
                     width: 194mm !important;
-                    height: 271mm !important;
-                    max-height: 271mm !important;
+                    height: 281mm !important;
+                    max-height: 281mm !important;
                     overflow: hidden !important;
-                    background: white !important;
+                    background: transparent !important;
                     margin: 0 !important;
                     padding: 0 !important;
                     box-sizing: border-box !important;
+                    direction: rtl !important;
                 `;
 
                 const receipts = printVersion.querySelectorAll('.receipt');
@@ -672,15 +687,17 @@
                         background: white !important;
                         border-radius: 5mm !important;
                         margin: 0 !important;
-                        width: 94mm !important;
-                        height: 132.5mm !important;
-                        max-height: 132.5mm !important;
+                        width: 91mm !important;
+                        height: 136.5mm !important;
+                        max-height: 136.5mm !important;
                         overflow: hidden !important;
                         font-size: 16px !important;
                         font-family: Arial, sans-serif !important;
                         display: flex !important;
                         flex-direction: column !important;
                         box-sizing: border-box !important;
+                        direction: rtl !important;
+                        text-align: right !important;
                     `;
 
                     const header = receipt.querySelector('.receipt-header');
@@ -693,6 +710,7 @@
                             border-radius: 4mm 4mm 0 0 !important;
                             flex-shrink: 0 !important;
                             text-align: center !important;
+                            direction: rtl !important;
                         `;
                     }
 
@@ -704,6 +722,8 @@
                             line-height: 1.3 !important;
                             font-weight: bold !important;
                             color: #000 !important;
+                            text-align: center !important;
+                            direction: rtl !important;
                         `;
                     }
 
@@ -718,6 +738,7 @@
                             display: inline-block !important;
                             border: 3px solid #ccc !important;
                             font-weight: bold !important;
+                            direction: rtl !important;
                         `;
                     }
 
@@ -728,6 +749,7 @@
                             font-size: 16px !important;
                             line-height: 1.4 !important;
                             margin: 4mm 0 !important;
+                            direction: rtl !important;
                         `;
                     }
 
@@ -746,6 +768,7 @@
                                 align-items: center !important;
                                 font-size: 16px !important;
                                 font-weight: bold !important;
+                                direction: rtl !important;
                             `;
                         } else {
                             field.style.cssText = `
@@ -758,6 +781,7 @@
                                 display: flex !important;
                                 justify-content: space-between !important;
                                 align-items: center !important;
+                                direction: rtl !important;
                             `;
                         }
                     });
@@ -768,6 +792,8 @@
                             font-size: 16px !important;
                             font-weight: bold !important;
                             color: ${label.closest('.amount-field') ? 'white' : '#000'} !important;
+                            text-align: right !important;
+                            direction: rtl !important;
                         `;
                     });
 
@@ -777,6 +803,8 @@
                             font-size: 16px !important;
                             font-weight: bold !important;
                             color: ${value.closest('.amount-field') ? 'white' : '#000'} !important;
+                            text-align: left !important;
+                            direction: rtl !important;
                         `;
                     });
 
@@ -793,25 +821,27 @@
                             text-align: center !important;
                             color: #333 !important;
                             border-top: 3px solid #ccc !important;
+                            direction: rtl !important;
                         `;
                     }
                 });
 
-                document.body.appendChild(printVersion);
+                wrapper.appendChild(printVersion);
+                document.body.appendChild(wrapper);
 
-                const canvas = await html2canvas(printVersion, {
-                    scale: 4,
+                const canvas = await html2canvas(wrapper, {
+                    scale: 3,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     allowTaint: true,
                     logging: false,
-                    width: 794,
-                    height: 1123,
-                    windowWidth: 794,
-                    windowHeight: 1123
+                    width: 2480, // 210mm at 300 DPI
+                    height: 3508, // 297mm at 300 DPI
+                    windowWidth: 2480,
+                    windowHeight: 3508
                 });
 
-                document.body.removeChild(printVersion);
+                document.body.removeChild(wrapper);
 
                 const imgData = canvas.toDataURL('image/png', 1.0);
                 pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
