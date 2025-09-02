@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
@@ -100,11 +100,11 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
+            gap: 25px;
             margin-top: 15px;
             page-break-after: always;
             height: auto;
-            min-height: 600px;
+            min-height: 700px;
         }
 
         .receipt-grid:last-child {
@@ -112,18 +112,18 @@
         }
 
         .receipt {
-            border: 3px solid #2c5aa0;
-            border-radius: 12px;
-            padding: 20px;
+            border: 4px solid #2c5aa0;
+            border-radius: 15px;
+            padding: 25px;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.15);
+            box-shadow: 0 8px 20px rgba(44, 90, 160, 0.2);
             page-break-inside: avoid;
             position: relative;
             overflow: hidden;
-            min-height: 320px;
+            min-height: 380px;
             display: flex;
             flex-direction: column;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .receipt::before {
@@ -132,45 +132,45 @@
             top: 0;
             right: 0;
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: linear-gradient(90deg, #2c5aa0, #1e3f73, #2c5aa0);
         }
 
         .receipt-header {
             text-align: center;
-            border-bottom: 3px double #2c5aa0;
-            padding-bottom: 12px;
-            margin-bottom: 15px;
+            border-bottom: 4px double #2c5aa0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            margin: -20px -20px 15px -20px;
-            padding: 15px 20px 12px 20px;
-            border-radius: 9px 9px 0 0;
+            margin: -25px -25px 20px -25px;
+            padding: 20px 25px 15px 25px;
+            border-radius: 12px 12px 0 0;
         }
 
         .receipt-title {
             color: #2c5aa0;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
-            margin: 0 0 10px 0;
+            margin: 0 0 12px 0;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
             line-height: 1.4;
         }
 
         .receipt-number {
             color: #6c757d;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             margin: 0;
             background: #fff;
-            padding: 6px 12px;
-            border-radius: 15px;
+            padding: 8px 15px;
+            border-radius: 20px;
             display: inline-block;
-            border: 2px solid #e9ecef;
+            border: 3px solid #e9ecef;
         }
 
         .receipt-body {
-            font-size: 16px;
-            line-height: 1.5;
+            font-size: 18px;
+            line-height: 1.6;
             flex: 1;
         }
 
@@ -178,11 +178,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 12px;
-            margin: 6px 0;
-            border-radius: 6px;
+            padding: 14px 16px;
+            margin: 8px 0;
+            border-radius: 8px;
             background: rgba(44, 90, 160, 0.08);
-            border-right: 4px solid #2c5aa0;
+            border-right: 5px solid #2c5aa0;
         }
 
         .field:nth-child(even) {
@@ -192,51 +192,51 @@
         .field-label {
             font-weight: bold;
             color: #495057;
-            min-width: 80px;
-            font-size: 16px;
+            min-width: 100px;
+            font-size: 18px;
         }
 
         .field-value {
             color: #2c5aa0;
-            font-weight: 600;
+            font-weight: 700;
             text-align: left;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .amount-field {
             background: linear-gradient(135deg, #28a745, #20c997) !important;
             color: white !important;
             border: none !important;
-            border-radius: 8px !important;
-            padding: 12px !important;
-            margin: 10px 0 !important;
+            border-radius: 10px !important;
+            padding: 16px !important;
+            margin: 12px 0 !important;
             text-align: center;
-            box-shadow: 0 3px 6px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
         }
 
         .amount-field .field-label,
         .amount-field .field-value {
             color: white !important;
-            font-size: 17px;
+            font-size: 20px;
             font-weight: bold;
         }
 
         .receipt-footer {
             text-align: center;
-            margin-top: 15px;
-            padding-top: 12px;
-            border-top: 2px solid #e9ecef;
-            font-size: 13px;
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 3px solid #e9ecef;
+            font-size: 15px;
             color: #6c757d;
             background: rgba(44, 90, 160, 0.05);
-            margin-left: -20px;
-            margin-right: -20px;
-            margin-bottom: -20px;
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-bottom: 12px;
-            border-radius: 0 0 9px 9px;
-            line-height: 1.4;
+            margin-left: -25px;
+            margin-right: -25px;
+            margin-bottom: -25px;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 15px;
+            border-radius: 0 0 12px 12px;
+            line-height: 1.5;
         }
 
         .status {
@@ -273,12 +273,12 @@
 
             @page {
                 size: A4 portrait;
-                margin: 10mm;
+                margin: 8mm;
             }
 
             body {
                 background: white;
-                font-size: 12px;
+                font-size: 14px;
                 margin: 0;
                 padding: 0;
             }
@@ -298,11 +298,11 @@
                 display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
                 grid-template-rows: repeat(2, 1fr) !important;
-                gap: 8mm !important;
+                gap: 6mm !important;
                 page-break-after: always;
-                width: 190mm;
-                height: 267mm;
-                max-height: 267mm;
+                width: 194mm;
+                height: 271mm;
+                max-height: 271mm;
                 overflow: hidden;
             }
 
@@ -312,90 +312,98 @@
 
             .receipt {
                 break-inside: avoid !important;
-                border: 3px solid #000 !important;
-                padding: 5mm !important;
+                border: 4px solid #000 !important;
+                padding: 6mm !important;
                 box-shadow: none !important;
                 background: white !important;
-                border-radius: 4mm;
+                border-radius: 5mm;
                 margin: 0 !important;
-                width: 91mm !important;
-                height: 140mm !important;
-                max-height: 140mm !important;
+                width: 94mm !important;
+                height: 132.5mm !important;
+                max-height: 132.5mm !important;
                 overflow: hidden;
-                font-size: 14px !important;
+                font-size: 16px !important;
                 display: flex !important;
                 flex-direction: column !important;
             }
 
             .receipt-header {
-                margin: -5mm -5mm 3mm -5mm !important;
-                padding: 4mm !important;
-                background: #f8f8f8 !important;
-                border-bottom: 2px solid #2c5aa0 !important;
-                border-radius: 3mm 3mm 0 0 !important;
+                margin: -6mm -6mm 4mm -6mm !important;
+                padding: 5mm !important;
+                background: #f0f0f0 !important;
+                border-bottom: 3px solid #000 !important;
+                border-radius: 4mm 4mm 0 0 !important;
                 flex-shrink: 0 !important;
             }
 
             .receipt-title {
-                font-size: 16px !important;
+                font-size: 18px !important;
                 margin: 0 0 3mm 0 !important;
-                line-height: 1.4 !important;
+                line-height: 1.3 !important;
                 font-weight: bold !important;
+                color: #000 !important;
             }
 
             .receipt-number {
-                font-size: 14px !important;
-                padding: 2.5mm 4mm !important;
-                border-radius: 10px !important;
-                border: 2px solid #e9ecef !important;
+                font-size: 16px !important;
+                padding: 3mm 5mm !important;
+                border-radius: 12px !important;
+                background: white !important;
+                color: #333 !important;
+                display: inline-block !important;
+                border: 3px solid #ccc !important;
                 font-weight: bold !important;
             }
 
             .receipt-body {
                 flex: 1 !important;
-                font-size: 14px !important;
+                font-size: 16px !important;
                 line-height: 1.4 !important;
-                margin: 3mm 0 !important;
+                margin: 4mm 0 !important;
             }
 
             .field {
-                padding: 3mm 4mm !important;
-                margin: 2mm 0 !important;
-                font-size: 14px !important;
-                border-radius: 2.5mm !important;
-                border-right: 3mm solid #2c5aa0 !important;
+                padding: 3.5mm 4mm !important;
+                margin: 2.5mm 0 !important;
+                font-size: 16px !important;
+                border-radius: 3mm !important;
+                border-right: 4mm solid #000 !important;
+                background: #f5f5f5 !important;
             }
 
             .field-label,
             .field-value {
-                font-size: 14px !important;
+                font-size: 16px !important;
+                font-weight: bold !important;
+                color: #000 !important;
             }
 
             .amount-field {
-                background: #28a745 !important;
+                background: #333 !important;
                 color: white !important;
-                padding: 4mm !important;
-                margin: 3mm 0 !important;
+                padding: 5mm !important;
+                margin: 4mm 0 !important;
                 border: none !important;
-                border-radius: 3mm !important;
+                border-radius: 4mm !important;
             }
 
             .amount-field .field-label,
             .amount-field .field-value {
                 color: white !important;
-                font-size: 14px !important;
+                font-size: 16px !important;
                 font-weight: bold !important;
             }
 
             .receipt-footer {
-                margin: 3mm -4mm -4mm -4mm !important;
-                padding: 3mm 4mm !important;
-                font-size: 11px !important;
-                border-radius: 0 0 3mm 3mm !important;
+                margin: 4mm -6mm -6mm -6mm !important;
+                padding: 4mm 5mm !important;
+                font-size: 13px !important;
+                border-radius: 0 0 4mm 4mm !important;
                 line-height: 1.3 !important;
                 flex-shrink: 0 !important;
-                background: #f8f8f8 !important;
-                border-top: 2px solid #e9ecef !important;
+                background: #f0f0f0 !important;
+                color: #333 !important;
+                border-top: 3px solid #ccc !important;
             }
         }
 
@@ -421,7 +429,7 @@
 <div class="container">
     <div class="header">
         <h1>🏢 مولد إيصالات اتحاد الملاك</h1>
-        <p>نظام إنشاء وطباعة إيصالات الاشتراكات الشهرية - خط كبير وواضح</p>
+        <p>نظام إنشاء وطباعة إيصالات الاشتراكات الشهرية - خط كبير وواضح محسن</p>
     </div>
 
     <div class="controls">
@@ -560,7 +568,7 @@
         container.innerHTML = '';
 
         try {
-            // تجميع الإيصالات في مجموعات من 4 إيصالات (2x2) بدلاً من 6
+            // تجميع الإيصالات في مجموعات من 4 إيصالات (2x2)
             for (let i = 0; i < receiptsData.length; i += 4) {
                 const pageDiv = document.createElement('div');
                 pageDiv.className = 'receipt-grid';
@@ -579,7 +587,7 @@
                 container.appendChild(pageDiv);
             }
 
-            showStatus(`تم إنشاء ${receiptsData.length} إيصال لشهر ${selectedMonth} ${selectedYear} بنجاح! 🎉`, 'success');
+            showStatus(`تم إنشاء ${receiptsData.length} إيصال لشهر ${selectedMonth} ${selectedYear} بنجاح!`, 'success');
         } catch (error) {
             console.error('خطأ في إنشاء الإيصالات:', error);
             showStatus('حدث خطأ أثناء إنشاء الإيصالات', 'error');
@@ -619,10 +627,9 @@
             return;
         }
 
-        showStatus('جاري إنشاء ملف PDF... 📄', 'info');
+        showStatus('جاري إنشاء ملف PDF...', 'info');
 
         try {
-            // التحقق من توفر المكتبات
             if (typeof window.jspdf === 'undefined' || typeof html2canvas === 'undefined') {
                 throw new Error('مكتبات PDF غير متاحة');
             }
@@ -638,19 +645,16 @@
                 }
 
                 const page = pages[i];
-
-                // إنشاء نسخة للطباعة من الصفحة
                 const printVersion = page.cloneNode(true);
 
-                // تطبيق أنماط الطباعة على النسخة
                 printVersion.style.cssText = `
                     display: grid !important;
                     grid-template-columns: repeat(2, 1fr) !important;
                     grid-template-rows: repeat(2, 1fr) !important;
-                    gap: 8mm !important;
-                    width: 190mm !important;
-                    height: 267mm !important;
-                    max-height: 267mm !important;
+                    gap: 6mm !important;
+                    width: 194mm !important;
+                    height: 271mm !important;
+                    max-height: 271mm !important;
                     overflow: hidden !important;
                     background: white !important;
                     margin: 0 !important;
@@ -658,37 +662,35 @@
                     box-sizing: border-box !important;
                 `;
 
-                // تطبيق أنماط الطباعة على الإيصالات
                 const receipts = printVersion.querySelectorAll('.receipt');
                 receipts.forEach(receipt => {
                     receipt.style.cssText = `
                         break-inside: avoid !important;
-                        border: 3px solid #000 !important;
-                        padding: 5mm !important;
+                        border: 4px solid #000 !important;
+                        padding: 6mm !important;
                         box-shadow: none !important;
                         background: white !important;
-                        border-radius: 4mm !important;
+                        border-radius: 5mm !important;
                         margin: 0 !important;
-                        width: 91mm !important;
-                        height: 140mm !important;
-                        max-height: 140mm !important;
+                        width: 94mm !important;
+                        height: 132.5mm !important;
+                        max-height: 132.5mm !important;
                         overflow: hidden !important;
-                        font-size: 14px !important;
+                        font-size: 16px !important;
                         font-family: Arial, sans-serif !important;
                         display: flex !important;
                         flex-direction: column !important;
                         box-sizing: border-box !important;
                     `;
 
-                    // تحسين العناصر الداخلية
                     const header = receipt.querySelector('.receipt-header');
                     if (header) {
                         header.style.cssText = `
-                            margin: -5mm -5mm 3mm -5mm !important;
-                            padding: 4mm !important;
-                            background: #f8f8f8 !important;
-                            border-bottom: 2px solid #2c5aa0 !important;
-                            border-radius: 3mm 3mm 0 0 !important;
+                            margin: -6mm -6mm 4mm -6mm !important;
+                            padding: 5mm !important;
+                            background: #f0f0f0 !important;
+                            border-bottom: 3px solid #000 !important;
+                            border-radius: 4mm 4mm 0 0 !important;
                             flex-shrink: 0 !important;
                             text-align: center !important;
                         `;
@@ -697,24 +699,24 @@
                     const title = receipt.querySelector('.receipt-title');
                     if (title) {
                         title.style.cssText = `
-                            font-size: 16px !important;
+                            font-size: 18px !important;
                             margin: 0 0 3mm 0 !important;
-                            line-height: 1.4 !important;
+                            line-height: 1.3 !important;
                             font-weight: bold !important;
-                            color: #2c5aa0 !important;
+                            color: #000 !important;
                         `;
                     }
 
                     const receiptNumber = receipt.querySelector('.receipt-number');
                     if (receiptNumber) {
                         receiptNumber.style.cssText = `
-                            font-size: 14px !important;
-                            padding: 2.5mm 4mm !important;
-                            border-radius: 10px !important;
+                            font-size: 16px !important;
+                            padding: 3mm 5mm !important;
+                            border-radius: 12px !important;
                             background: white !important;
-                            color: #6c757d !important;
+                            color: #333 !important;
                             display: inline-block !important;
-                            border: 2px solid #e9ecef !important;
+                            border: 3px solid #ccc !important;
                             font-weight: bold !important;
                         `;
                     }
@@ -723,9 +725,9 @@
                     if (body) {
                         body.style.cssText = `
                             flex: 1 !important;
-                            font-size: 14px !important;
+                            font-size: 16px !important;
                             line-height: 1.4 !important;
-                            margin: 3mm 0 !important;
+                            margin: 4mm 0 !important;
                         `;
                     }
 
@@ -733,26 +735,26 @@
                     fields.forEach(field => {
                         if (field.classList.contains('amount-field')) {
                             field.style.cssText = `
-                                background: #28a745 !important;
+                                background: #333 !important;
                                 color: white !important;
-                                padding: 4mm !important;
-                                margin: 3mm 0 !important;
+                                padding: 5mm !important;
+                                margin: 4mm 0 !important;
                                 border: none !important;
-                                border-radius: 3mm !important;
+                                border-radius: 4mm !important;
                                 display: flex !important;
                                 justify-content: space-between !important;
                                 align-items: center !important;
-                                font-size: 14px !important;
+                                font-size: 16px !important;
                                 font-weight: bold !important;
                             `;
                         } else {
                             field.style.cssText = `
-                                padding: 3mm 4mm !important;
-                                margin: 2mm 0 !important;
-                                font-size: 14px !important;
-                                border-radius: 2.5mm !important;
-                                border-right: 3mm solid #2c5aa0 !important;
-                                background: rgba(44, 90, 160, 0.15) !important;
+                                padding: 3.5mm 4mm !important;
+                                margin: 2.5mm 0 !important;
+                                font-size: 16px !important;
+                                border-radius: 3mm !important;
+                                border-right: 4mm solid #000 !important;
+                                background: #f5f5f5 !important;
                                 display: flex !important;
                                 justify-content: space-between !important;
                                 align-items: center !important;
@@ -763,67 +765,62 @@
                     const fieldLabels = receipt.querySelectorAll('.field-label');
                     fieldLabels.forEach(label => {
                         label.style.cssText = `
-                            font-size: 14px !important;
+                            font-size: 16px !important;
                             font-weight: bold !important;
-                            color: ${label.closest('.amount-field') ? 'white' : '#495057'} !important;
+                            color: ${label.closest('.amount-field') ? 'white' : '#000'} !important;
                         `;
                     });
 
                     const fieldValues = receipt.querySelectorAll('.field-value');
                     fieldValues.forEach(value => {
                         value.style.cssText = `
-                            font-size: 14px !important;
+                            font-size: 16px !important;
                             font-weight: bold !important;
-                            color: ${value.closest('.amount-field') ? 'white' : '#2c5aa0'} !important;
+                            color: ${value.closest('.amount-field') ? 'white' : '#000'} !important;
                         `;
                     });
 
                     const footer = receipt.querySelector('.receipt-footer');
                     if (footer) {
                         footer.style.cssText = `
-                            margin: 3mm -5mm -5mm -5mm !important;
-                            padding: 3mm 4mm !important;
-                            font-size: 11px !important;
-                            border-radius: 0 0 3mm 3mm !important;
+                            margin: 4mm -6mm -6mm -6mm !important;
+                            padding: 4mm 5mm !important;
+                            font-size: 13px !important;
+                            border-radius: 0 0 4mm 4mm !important;
                             line-height: 1.3 !important;
                             flex-shrink: 0 !important;
-                            background: #f8f8f8 !important;
+                            background: #f0f0f0 !important;
                             text-align: center !important;
-                            color: #6c757d !important;
-                            border-top: 2px solid #e9ecef !important;
+                            color: #333 !important;
+                            border-top: 3px solid #ccc !important;
                         `;
                     }
                 });
 
-                // إضافة النسخة إلى الصفحة مؤقتاً
                 document.body.appendChild(printVersion);
 
-                // إنشاء canvas من النسخة المحسنة
                 const canvas = await html2canvas(printVersion, {
-                    scale: 3,
+                    scale: 4,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     allowTaint: true,
                     logging: false,
-                    width: 794, // A4 width at 96 DPI (210mm)
-                    height: 1123, // A4 height at 96 DPI (297mm)
+                    width: 794,
+                    height: 1123,
                     windowWidth: 794,
                     windowHeight: 1123
                 });
 
-                // إزالة النسخة المؤقتة
                 document.body.removeChild(printVersion);
 
                 const imgData = canvas.toDataURL('image/png', 1.0);
-
-                // إضافة الصورة للـ PDF بأبعاد A4 الصحيحة
                 pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
             }
 
             const fileName = `ايصالات_اتحاد_الملاك_${document.getElementById('monthInput').value}_${document.getElementById('yearInput').value}.pdf`;
             pdf.save(fileName);
 
-            showStatus('تم تحميل ملف PDF بنجاح! 📥', 'success');
+            showStatus('تم تحميل ملف PDF بنجاح!', 'success');
 
         } catch (error) {
             console.error('خطأ في إنشاء PDF:', error);
